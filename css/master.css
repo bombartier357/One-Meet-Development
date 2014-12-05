@@ -1,0 +1,168 @@
+#master-node{
+border:1px solid #cacaca;
+}
+
+/*---------------------------------------------------------------======================MASTER=======================-----------------------------------------------------------------*/
+
+
+#buffer-nav{
+height:50px;
+}
+
+#logo{
+border:1px solid #cacaca;
+}
+
+#nav{
+border:1px solid #cacaca;
+}
+
+#home-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#profile-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#matches-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#search-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#body{
+border:1px solid #cacaca;
+height:800px;
+width:100%;
+}
+
+#footer{
+border:1px solid #cacaca;
+height:125px;
+width:100%;
+}
+
+/*------------------------------------------------------===================================HOME==========================----------------------------------------------------------------------*/
+#stats{
+border:1px solid #cacaca;
+}
+#views{
+border:1px solid #cacaca;
+height:500px;
+}
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++VIDEO+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+#remoteVideos video {
+	height: 750px;
+	margin-top:-155px;
+	border: 1px solid #cacaca;
+}
+#localVideo {
+	height: 150px;
+	border: 2px solid #cacaca;
+}
+#video-favorites{
+	border: 1px solid #cacaca;
+	height:500px;
+}
+
+
+/*------------------------------------------------------===================================PROFILE==========================----------------------------------------------------------------------*/
+#profile-image{
+border:1px solid #cacaca;
+height:300px;
+width:300px;
+}
+
+#extra-images{
+border:1px solid #cacaca;
+height:300px;
+width:300px;
+float:left;
+}
+
+#interest-display{
+border:1px solid #cacaca;
+}
+
+#age-display{
+border:1px solid #cacaca;
+}
+
+#image-reel{
+border:1px solid #cacaca;
+}
+
+#image-display{
+border:1px solid #cacaca;
+width:100%;
+height:300px;
+overflow-y: hidden;
+overflow-x: scroll;
+}
+
+#window-interests{
+	background-color:#cacaca;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++CROPPER+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+.cropper {
+    position: relative;
+    cursor: crosshair;
+}
+.cropper-area-handle {
+    width: 6px;
+    height: 6px;
+    background: yellow;
+}
+.cropper-overlay {
+    background: black;
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
+
+
+/*------------------------------------------------------===================================MATCHES==========================----------------------------------------------------------------------*/
+
+#matches{
+border:1px solid #cacaca;
+}
+
+#pic-1{
+border:1px solid #cacaca;
+text-align: center;
+height:750px;
+}
+
+#pic-2{
+border:1px solid #cacaca;
+text-align: center;
+height:750px;
+}
+
+#matching-chars{
+border:1px solid #cacaca;
+text-align: center;
+height:750px;
+}
+
+/*------------------------------------------------------===================================SEARCH==========================----------------------------------------------------------------------*/
+#search{
+border:1px solid #cacaca;
+}
+
+#search-results{
+border:1px solid #cacaca;
+height:680px;
+overflow-y: scroll;
+overflow-x: hidden;
+}
