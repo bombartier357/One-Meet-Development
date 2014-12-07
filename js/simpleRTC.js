@@ -1,6 +1,7 @@
 // grab the room from the URL
-            var room = location.search && location.search.split('?')[1];
-
+$(document).ready(function() 
+{	
+            var room = $('#join-room').val();
             // create our webrtc connection
             var webrtc = new SimpleWebRTC({
                 // the id/element dom element that will hold "our" video
@@ -182,3 +183,5 @@
                     
                 }
             });
+            
+});

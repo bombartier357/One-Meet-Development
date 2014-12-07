@@ -1,20 +1,16 @@
-#master-node{
-border:1px solid #cacaca;
-}
 
+#body{
+margin-top:-20px;
+}
 /*---------------------------------------------------------------======================MASTER=======================-----------------------------------------------------------------*/
 
-
-#buffer-nav{
-height:50px;
-}
 
 #logo{
 border:1px solid #cacaca;
 }
 
 #nav{
-border:1px solid #cacaca;
+
 }
 
 #home-link{
@@ -38,7 +34,7 @@ text-align: center;
 }
 
 #body{
-border:1px solid #cacaca;
+
 height:800px;
 width:100%;
 }
@@ -47,15 +43,21 @@ width:100%;
 border:1px solid #cacaca;
 height:125px;
 width:100%;
+background-color:white;
 }
 
 /*------------------------------------------------------===================================HOME==========================----------------------------------------------------------------------*/
 #stats{
-border:1px solid #cacaca;
+
 }
 #views{
 border:1px solid #cacaca;
+background-color:white;
 height:500px;
+}
+
+#mail-window{
+
 }
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++VIDEO+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -67,13 +69,30 @@ height:500px;
 }
 #localVideo {
 	height: 150px;
-	border: 2px solid #cacaca;
 }
 #video-favorites{
 	border: 1px solid #cacaca;
+	background-color:white;
 	height:500px;
 }
 
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++FAVORITES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+#favorites{
+	border:1px solid #cacaca;
+	height:500px;
+	background-color:white;
+}
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++CHAT ROOMS+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+#chat-rooms{
+	background-color:white;
+	height:600px;
+	width:82%;
+	float:right;
+	margin-right:15px;
+}
 
 /*------------------------------------------------------===================================PROFILE==========================----------------------------------------------------------------------*/
 #profile-image{
@@ -99,6 +118,7 @@ border:1px solid #cacaca;
 
 #image-reel{
 border:1px solid #cacaca;
+background-color:white;
 }
 
 #image-display{
@@ -107,6 +127,7 @@ width:100%;
 height:300px;
 overflow-y: hidden;
 overflow-x: scroll;
+background-color:white;
 }
 
 #window-interests{
@@ -129,7 +150,6 @@ overflow-x: scroll;
     opacity: 0.5;
     filter: alpha(opacity = 50);
 }
-
 
 /*------------------------------------------------------===================================MATCHES==========================----------------------------------------------------------------------*/
 
@@ -162,6 +182,7 @@ border:1px solid #cacaca;
 
 #search-results{
 border:1px solid #cacaca;
+background-color:white;
 height:680px;
 overflow-y: scroll;
 overflow-x: hidden;

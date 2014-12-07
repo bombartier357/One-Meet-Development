@@ -114,6 +114,13 @@ private $salt= "";
 		$query->bindValue(6, $this->submit_date, PDO::PARAM_STR);
 		$query->bindValue(7, $this->ip_submit, PDO::PARAM_STR);
 		$result = $query->execute();
+		
+		$last_id = $query->lastInsertId(); 
+		
+		$query2 = $this->con->prepare("INSERT INTO chat_rooms SET owner_id = ?, room_name = ?");
+		$query2->bindValue(1, $last_id, PDO::PARAM_INT);
+		$query2->bindValue(2, $this->user_name, PDO::PARAM_STR);
+		$result2 = $query2->execute();
 		}catch(PDOException $e){
 			echo $e;
 		}
