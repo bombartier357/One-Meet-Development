@@ -28,15 +28,20 @@ class constructUserClass{
 	public $zip;
 	public $country;
 	public $ip;
+	public $new_mail_count;
 	
 	//Private Variables/
 	private $hash;
+	
 	private $image_bank = array();
 	private $image_bank_id = array();
 	private $image_bank_x = array();
 	private $image_bank_y = array();
 	private $image_bank_w = array();
 	private $image_bank_h = array();
+	private $image_actual_w = array();
+	private $image_actual_h = array();
+	
 	private $favs_bank = array();
 	private $favs_bank_id = array();
 	
@@ -79,6 +84,13 @@ class constructUserClass{
 		$this->sex = $row['sex'];
 		$this->user_name = $row['user'];
 		
+		//This counts new messages for user to be displayed in nav-mail/
+		$queryM = $this->con->prepare("SELECT * FROM mail WHERE receiver_id = ? && has_read = 0");
+		$queryM->bindValue(1, $this->id, PDO::PARAM_INT);
+		$queryM->execute();
+		
+		$this->new_mail_count = $queryM->rowCount();
+		
 		//This allows us to have my user profile and to look at other users profiles/
 		if(isset($_GET['access'])){
 			$image_id = $_GET['access'];
@@ -87,17 +99,21 @@ class constructUserClass{
 		}
 
 		//This build image bank for user and assigns to array for later use/
-		$query2 = $this->con->prepare("SELECT * FROM images WHERE owner = ? ORDER BY ID DESC");
+		$query2 = $this->con->prepare("SELECT * FROM images WHERE owner = ? ORDER BY order_img ASC");
 		$query2->bindValue(1, $image_id, PDO::PARAM_INT);
 		$query2->execute();
 		
 		while($row2 = $query2->fetch(PDO::FETCH_ASSOC)){
+			list($width, $height, $type, $attr) = getimagesize("images/user_images/".$image_id."/".$row2['filename']);
+			
 			$this->image_bank[] = $row2['filename'];
 			$this->image_bank_id[] = $row2['id'];
 			$this->image_bank_x[] = $row2['x_coords'];
 			$this->image_bank_y[] = $row2['y_coords'];
 			$this->image_bank_w[] = $row2['w_coords'];
 			$this->image_bank_h[] = $row2['h_coords'];
+			$this->image_actual_w[] = $width;
+			$this->image_actual_h[] = $height;
 		}
 		
 		//This build favorites bank for user and assigns to array for later use/
@@ -139,7 +155,7 @@ class constructUserClass{
 			$this->header($target); 
 			$this->js_packages($target);
 			echo "</head>";
-			echo "<body style='background: url(\"js/jquery-ui-custom/images/ui-bg_fine-grain_75_c6caf8_60x60.png\");'><div class='container-fluid' id='master-node'>";
+			echo "<body style='background: url(\"js/jquery-ui-custom/images/ui-bg_layered-circles_75_e2fbe7_13x13.png\");'><div class='container-fluid' id='master-node'>";
 			$this->html_nav_bar($target);
 			$this->html_body($target);
 			$this->html_footer($target);
@@ -171,38 +187,38 @@ class constructUserClass{
 	
 	private function html_nav_bar($target){
 		echo "<div class='row-fluid'>
-		<nav class='navbar navbar-default' role='navigation'>
+		<nav style='background: url(\"images/main-bg-2.png\");' class='navbar navbar-default' role='navigation'>
 		<ul class='nav navbar-nav'>";
 		
 		 if($target != 'home'){
-			echo "<li class='col-md-3' id='home-link'><a href='index.php?logged=yes&page=home'>Home</a></li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='home-link'><a href='index.php?logged=yes&page=home'>Home</a></li>";
 		}else{
-			echo "<li class='col-md-3' id='home-link'>Home</li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='home-link'>Home</li>";
 		}
 		
 		if($target != 'profile'){
-			echo "<li class='col-md-3' id='profile-link'><a href='index.php?logged=yes&page=profile'>Profile</a></li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='profile-link'><a href='index.php?logged=yes&page=profile'>Profile</a></li>";
 		}else{
-			echo "<li class='col-md-3' id='profile-link'>Profile</li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='profile-link'>Profile</li>";
 		}
 		
 		if($target != 'matches'){
-			echo "<li class='col-md-3' id='matches-link'><a href='index.php?logged=yes&page=matches'>Matches</a></li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='matches-link'><a href='index.php?logged=yes&page=matches'>Match</a></li>";
 		}else{
-			echo "<li class='col-md-3' id='matches-link'>Matches</li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='matches-link'>Matches</li>";
 		}
 		
 		if($target != 'search'){
-			echo "<li class='col-md-3' id='search-link'><a href='index.php?logged=yes&page=search'>Search</a></li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='search-link'><a href='index.php?logged=yes&page=search'>Search</a></li>";
 		}else{
-			echo "<li class='col-md-3' id='search-link'>Search</li>";
+			echo "<li style='background-color:white;border-radius: 20px;' class='col-md-3' id='search-link'>Search</li>";
 		}
 		echo "</ul>
 		<ul class='nav nav-pills' style='float:right;'>
 		
 		<li role='presentation'>
 		<button id='nav-mail' onclick='nav_mail();' type='button' class='btn btn-default btn-default' style='float:right;'>
-		  <span class='glyphicon glyphicon-envelope' aria-hidden='true'></br>(1)</span>
+		  <span class='glyphicon glyphicon-envelope' aria-hidden='true'></br>(".$this->new_mail_count.")</span>
 		</button>
 		</li>
 		<li role='presentation'>
@@ -229,13 +245,17 @@ class constructUserClass{
 		//WINDOW ELEMENTS/
 		
 		echo "<div id='mail-window' style='display:none;'>
-		<table class='table table-bordered'><tr><td>Sender:</td><td id='sender-name'></td></tr><tr><td>Receiver:</td><td id='receiver-name'></td></tr><tr><td>Subject:</td><td>dfgsdfg</td></tr></table>
+		<table class='table table-bordered'><tr><td>Sender:</td><td id='sender-name'></td></tr><tr><td>Receiver:</td><td id='receiver-name'></td></tr><tr><td>Subject:</td><td><input class='form-control' type='text' id='send-mail-subject' placeholder='Subject'/></td></tr></table>
 		<table>
 		<tr>
 		<td>
-		<textarea style='resize:none;width:511px;height:340px;' name='addinfo' id='info'></textarea>
+		<textarea style='resize:none;width:511px;height:300px;' id='snail-mail-message'></textarea>
 		</td>
 		</tr>
+		<tr>
+		<td>
+		<center><button onclick='send_snail_mail();' class='btn btn-default' id='send-snail-mail'>Send</button></center>
+		</td></tr>
 		</table>
 		</div>";
 		
@@ -247,8 +267,41 @@ class constructUserClass{
 		Automatically accept video requests
 		</div>";
 		
-		echo "<div id='receive-mail-window' style='display:none;'>
+		echo "<div id='receive-mail-window' style='display:none;'>";
+		
+		$query = $this->con->prepare("SELECT * FROM mail WHERE receiver_id = ?");
+		$query->bindValue(1, $this->id, PDO::PARAM_INT);
+		$query->execute();
+		
+		echo "<table class='table table-bordered'>
+		<th>From</th><th>Date</th><th>Subject</th>";
+		
+		while($row = $query->fetch(PDO::FETCH_ASSOC)){
+			$query2 = $this->con->prepare("SELECT * FROM users WHERE id = ?");
+			$query2->bindValue(1, $row['sender_id'], PDO::PARAM_INT);
+			$query2->execute();
+			
+			$row2 = $query2->fetch(PDO::FETCH_ASSOC);
+			
+			echo "<tr onclick='view_message(".$row['id'].");'>
+			<td>
+			".$row2['user']."
+			</td>
+			<td>
+			".$row['time_stamp']."
+			</td>
+			<td>
+			".$row['subject']."
+			</td>
+			</tr>";
+		}
+		
+		echo "</table></div>";
+		
+		echo "<div id='show-mail-window' style='display:none;'>
+		<span>Subject: </span><p></p>
 		</div>";
+		
 		//BODY HOME....................
 		if($target == 'home'){
 			echo "<div class='col-md-2' id='stats'>";
@@ -278,7 +331,7 @@ class constructUserClass{
 			}
 			
 			if(isset($_GET['subpage'])){
-			echo "<div class='col-md-12' id='video-favorites'><center>Favorites</center></br>";
+				echo "<div class='col-md-12' id='video-favorites'><center>Favorites</center></br>";
 				$favs_bank_count = count($this->favs_bank);
 
 				for($i=0; $i < $favs_bank_count; $i++){
@@ -316,12 +369,14 @@ class constructUserClass{
 					</ul></div>';
 				}
 				echo "</div>";
-}
+		}else{
+			echo "<div style='background-color:white;height:664px;border:1px solid #cacaca;' class='col-md-12' >AD GOES HERE</div>";
+		}
 			echo "</div>";
 			
 			if(isset($_GET['subpage'])){
 				if($_GET['subpage'] == 'views'){
-					echo "<div class='col-md-10' id='views'>";
+					echo "<div style='margin-left:-15px;' class='col-md-10' id='views'>";
 					$query = $this->con->prepare("SELECT * FROM views WHERE viewed_id = ?"); 
 					$query->bindValue(1, $this->id, PDO::PARAM_INT);
 					$query->execute();
@@ -350,18 +405,18 @@ class constructUserClass{
 						$query->execute();
 						
 						echo "<table class='table table-bordered'>";
+						echo "<tr>
+						<th>Avatar</th><th>User</th><th>Sex</th><th><span style='float:right;'>Actions</span></th>
+						</tr>";
+						
 						while($row = $query->fetch(PDO::FETCH_ASSOC)){
 							
 							$query2 = $this->con->prepare("SELECT * FROM users WHERE id = ?");
 							$query2->bindValue(1, $row['fav_id'], PDO::PARAM_INT);
 							$query2->execute();
 							$row2 = $query2->fetch(PDO::FETCH_ASSOC);
-						
-							echo "<tr>
-							<td>
-							".$row2['user']."
-							</td>
-							</tr>";
+							
+							$this->user_row($row2['id']);
 						}
 						echo "</table>";
 					
@@ -371,7 +426,7 @@ class constructUserClass{
 				}elseif($_GET['subpage'] == 'chat_rooms'){
 					echo "<div class='col-md-10' id='chat-rooms'>
 					</div><div class='col-md-10' id='chat-input'>
-					<input class='form-control' id='send-message' type='text' style='width:96.5%;margin-left:-.3%;' class='input-group input-group-lg' placholder='Message' />
+					<input class='form-control' id='send-message' type='text' style='width:100%;margin-left:-2%;' class='input-group input-group-lg' placholder='Message' />
 					<button style='float:right;margin-top:-2.2%' id='button-send-message' onclick='send_message();' class='btn btn-default'>Send</button>
 					</div>";
 				}elseif($_GET['subpage'] == 'video'){
@@ -380,6 +435,9 @@ class constructUserClass{
         				<div id='remoteVideos'></div>
 					</div>";
 				}
+			//THIS DISPLAYS HOME SCREEN/
+			}else{
+			echo "<div style='height:800px;background-color:white;margin-left:-15px;border:1px solid #cacaca;' class='col-md-10' id='home-screen'><center>HOME SCREEN</center></div>";	
 			}
 		//END HOME/	
 		}
@@ -401,7 +459,25 @@ class constructUserClass{
 			}
 
 			for($i=0; $i < $image_bank_count; $i++){
-				$image_stream .= '<div ondrop="drop(event)" ondragover="allowDrop(event)"><a href="index.php?logged=yes&page=imagecrop&imageid='.$this->image_bank_id[$i].'"><img id="extra-images" src="images/user_images/'.$profile_id.'/'.$this->image_bank[$i].'" draggable="true" ondragstart="drag(event)"/></a></div>';
+				if($this->image_bank_w[$i] > 0 && $this->image_bank_h[$i] > 0){
+					$width = $this->image_actual_w[$i];
+					$height = $this->image_actual_h[$i];
+					
+					$resize_w = $width / $this->image_bank_w[$i];
+					$resize_h = $height / $this->image_bank_h[$i];
+					
+					$resize_w2 = $this->image_bank_w[$i] / 300;
+					$resize_h2 = $this->image_bank_h[$i] / 300;
+					
+					$image_holder = '<img id="'.$this->image_bank_id[$i].'" class="extra-images" style="margin-left:-'.($this->image_bank_x[$i]/$resize_w2).'px;margin-top:-'.($this->image_bank_y[$i]/$resize_h2).'px;height:'.($this->image_bank_h[$i]*$resize_h/$resize_h2).'px;width:'.($this->image_bank_w[$i]*$resize_w/$resize_w2).'px;" src="images/user_images/'.$profile_id.'/'.$this->image_bank[$i].'" draggable="true" ondragstart="drag(event, '.$this->id.', '.$this->image_bank_id[$i].')"/>';
+				}else{
+					$image_holder = '<img id="'.$this->image_bank_id[$i].'" class="extra-images" src="images/user_images/'.$profile_id.'/'.$this->image_bank[$i].'" draggable="true" ondragstart="drag(event, '.$this->id.', '.$this->image_bank_id[$i].')" />';
+				}
+				
+				
+				$image_stream .= '<div style="min-width:300px;min-height:300px;max-width:300px;max-height:300px;float:left;"><a href="index.php?logged=yes&page=imagecrop&imageid='.$this->image_bank_id[$i].'"><div style="overflow:hidden;" >
+				'.$image_holder.'
+				</a></div></div>';
 			}
 			
 			if(isset($_GET['access'])){
@@ -424,10 +500,26 @@ class constructUserClass{
 				$id = $this->id;
 				$display_name = $this->user_name;
 			}
+			
+			if($this->image_bank_w[0] > 0){
+				$width = $this->image_actual_w[0];
+				$height = $this->image_actual_h[0];
+				
+				
+				$resize_w = $width / $this->image_bank_w[0];
+				$resize_h = $height / $this->image_bank_h[0];
+				
+				$resize_w2 = $this->image_bank_w[0] / 300;
+				$resize_h2 = $this->image_bank_h[0] / 300;
+				$image_holder = "<img style='margin-left:-".($this->image_bank_x[0]/$resize_w2)."px;margin-top:-".($this->image_bank_y[0]/$resize_h2)."px;height:".($this->image_bank_h[0]*$resize_h/$resize_h2)."px;width:".($this->image_bank_w[0]*$resize_w/$resize_w2)."px;' src='$image_main' />";
+			}else{
+				$image_holder = "<img src='$image_main' />";
+			}
 
-			echo "<div class='col-md-12'><div class='col-md-3'>Id: ".$id."</br>User: ".$display_name."</div></div>
-
-			<div class='col-md-2'><div style='overflow:hidden;width:".$this->image_bank_w[0]."px;'><img styl='margin-left:-".$this->image_bank_x[0]."px;' id='profile-image' src='$image_main' /></div></div>
+			echo "<div class='col-md-12'><div style='border:1px solid #cacaca;background-color:white;height:800px;' class='col-md-12'><div class='col-md-12'>Id: ".$id."</br>User: ".$display_name."</div>
+			<div class='col-md-2'><div style='min-width:300px;min-height:300px;max-width:300px;max-height:300px;'><div style='overflow:hidden;'>
+			".$image_holder."
+			</div></div></div>
 			
 			<div class='col-md-4'>
 			<div class='col-md-12' id='age-display'>Age</div>
@@ -451,11 +543,14 @@ class constructUserClass{
 			
 			<div id='progressNumber'></div>
 			<div id='image-display'>
+			<div class='col-md-1' >
+			<div style='width:120px;height:250px;' ondrop='drop(event)' ondragover='allowDrop(event)'></div>
+			</div>
 			$image_stream
 			</div>
 			</div>";
 			
-			echo "<div style='display:none;' id='window-interests'><table class='table table-bordered'><th>Interests</th></table></div>";
+			echo "<div style='display:none;' id='window-interests'><table class='table table-bordered'><th>Interests</th></table></div></div></div>";
 		//END PROFILE/
 		}
 		
@@ -467,7 +562,7 @@ class constructUserClass{
 					
 			echo "<div class='col-md-12'>
 			
-			<center><button onclick='crop(".$_GET['imageid'].");' class='btn btn-default'>Crop</button></center>
+			<center><button onclick='crop(".$_GET['imageid'].");' class='btn btn-success'>Crop</button><button onclick='delete_image(".$_GET['imageid'].", ".$this->id.");' id='delete-image-button' class='btn btn-danger'>DELETE</button><button onclick='make_private_image(".$_GET['imageid'].");' class='btn btn-info'>Make Private</button></center>
 			
 			<center><img id='crop-this-image' src='images/user_images/".$this->id."/".$file."' /></center>
 			</div>
@@ -477,18 +572,18 @@ class constructUserClass{
 		
 		//BODY MATCHES................
 		if($target == 'matches'){
-			echo "<div class='col-md-12' id='matches'>
+			echo "<div class='col-md-12' ><div class='col-md-12' id='matches'>
 			<div class='col-md-4' id='pic-1'>PICTURE ONE</div>
 			<div class='col-md-4' id='matching-chars'>MATCHING CHARACTERISTICS</div>
 			<div class='col-md-4' id='pic-2'>PICTURE TWO</div>
-			</div>";
+			</div></div>";
 		}
 		
 		
 		//BODY SEARCH...................
 		if($target == 'search'){
-			echo "<div class='col-md-12' id='search'>
-			<div class='col-md-12'>Search</div>
+			echo "<div class='col-md-12' id='search' ng-app'searchUsers'>
+			<div style='border:1px solid #cacaca;background-color:white;' class='col-md-12'>Search
 			<div class='col-md-12' id='search-form'>
 			<div class='row'>
 			  <div class='col-lg-2'>
@@ -509,7 +604,7 @@ class constructUserClass{
 				</div><!-- /.row -->
 				</form>
 				</div>
-			</div>
+			</div></div>
 			<div class='col-md-12' id='search-results'>";
 
 			$query = $this->con->prepare("SELECT * FROM users WHERE id != ?"); 
@@ -534,20 +629,22 @@ class constructUserClass{
 	
 	/////FOOTER///////
 	private function html_footer($target){
-		echo "<div class='row-fluid' id='footer'>
-		
-		</div>";
+		echo "<center><div style='width:98.4%;' class='row-fluid' id='footer'>
+		</div></center>";
 	}
 	
 	///////HIDDEN VARIABLES////////
 	private function hidden_variables($target){
 		//UNIVERSAL HIDDEN VARIABLES/
 		echo "<input type='hidden' id='user-id' value='".$this->id."'/>
-		<input type='hidden' id='user-name' value='".$this->user_name."'/>";
+		<input type='hidden' id='user-name' value='".$this->user_name."'/>
+		";
+		
 		
 		//HOME VARIABLES/
 		if($target == 'home'){
 			if(isset($_GET['subpage'])){
+				echo "<input type='hidden' id='send-snail-mail-id' />";
 				if($_GET['subpage'] == 'video'){
 					if(isset($_GET['join-room'])){
 						echo "<input type='hidden' id='join-room' value='".$_GET['join-room']."' />";
@@ -578,6 +675,7 @@ class constructUserClass{
 		//UNIVERSAL JS PACKAGES/
 		echo "<script type='text/javascript' src='bootstrap/js/bootstrap.js'></script>
 		<script type='text/javascript' src='js/nav.js'></script>
+		<script type='text/javascript' src='js/angular.js'></script>
 		<!--<script type='text/javascript' src='js/timeout.js'></script>-->";
 		
 		//PROFILE PACKAGES/
@@ -623,7 +721,7 @@ class constructUserClass{
 				
 				$row = $query->fetch(PDO::FETCH_ASSOC);
 				
-				$query2 = $this->con->prepare("SELECT * FROM images WHERE owner = ? ORDER BY id DESC"); 
+				$query2 = $this->con->prepare("SELECT * FROM images WHERE owner = ? ORDER BY order_img ASC"); 
 				$query2->bindValue(1, $id, PDO::PARAM_INT);			
 				$query2->execute();
 				

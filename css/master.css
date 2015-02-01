@@ -53,7 +53,7 @@ background-color:white;
 #views{
 border:1px solid #cacaca;
 background-color:white;
-height:500px;
+height:800px;
 }
 
 #mail-window{
@@ -73,14 +73,15 @@ height:500px;
 #video-favorites{
 	border: 1px solid #cacaca;
 	background-color:white;
-	height:500px;
+	height:664px;
 }
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++FAVORITES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 #favorites{
 	border:1px solid #cacaca;
-	height:500px;
+	height:800px;
+	margin-left:-15px;
 	background-color:white;
 }
 
@@ -88,10 +89,10 @@ height:500px;
 
 #chat-rooms{
 	background-color:white;
-	height:600px;
-	width:82%;
-	float:right;
-	margin-right:15px;
+	height:766px;
+	width:83.3%;
+	float:left;
+	margin-left:-15px;
 }
 
 /*------------------------------------------------------===================================PROFILE==========================----------------------------------------------------------------------*/
@@ -101,7 +102,7 @@ height:300px;
 width:300px;
 }
 
-#extra-images{
+.extra-images{
 border:1px solid #cacaca;
 height:300px;
 width:300px;
@@ -119,6 +120,7 @@ border:1px solid #cacaca;
 #image-reel{
 border:1px solid #cacaca;
 background-color:white;
+height:458px;
 }
 
 #image-display{
@@ -155,6 +157,8 @@ background-color:white;
 
 #matches{
 border:1px solid #cacaca;
+height:800px;
+background-color:white;
 }
 
 #pic-1{
@@ -183,7 +187,7 @@ border:1px solid #cacaca;
 #search-results{
 border:1px solid #cacaca;
 background-color:white;
-height:680px;
+height:720px;
 overflow-y: scroll;
 overflow-x: hidden;
 }

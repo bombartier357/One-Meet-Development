@@ -15,6 +15,32 @@ function crop(image_id){
 			});
 }
 
+function delete_image(id, owner){
+	var del_button = confirm('Are you sure you would like to delete this picture?  This cannot be undone.');
+	
+	if(del_button){
+		var ajax_local = 'ajax.php';
+		$.post(ajax_local,{id:id,owner:owner,type:'delete_image'})
+		.done(function(data){
+			//location.reload();
+			window.location.replace('index.php?logged=yes&page=profile');
+			//alert(data);
+			});
+	}
+}
+
+function make_private_image(id, owner){
+	var make_private = confirm('Are you sure you would like to make this picture private?  You will have to manually add permissions for members so they can see this picture in the future.');
+	
+	if(make_private){
+		var ajax_local = 'ajax.php';
+		$.post(ajax_local,{id:id,type:'make_private_image'})
+		.done(function(){
+			location.reload();
+			});
+	}
+}
+
 
 $(document).ready(function() 
 {

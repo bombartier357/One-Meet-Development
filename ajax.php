@@ -139,4 +139,43 @@ if(isset($_POST['id']) && isset($_POST['x_coords']) && isset($_POST['y_coords'])
 	$query->bindValue(5, $_POST['id'], PDO::PARAM_INT);
 	$query->execute();
 }
+
+//This sends snail mail from modal window/
+if(isset($_POST['from_id']) && isset($_POST['to_id']) && isset($_POST['subject']) && isset($_POST['message'])){
+	$query = $con->prepare("INSERT INTO mail SET sender_id = ?, receiver_id = ?, subject = ?, text = ?");
+	$query->bindValue(1, $_POST['from_id'], PDO::PARAM_INT);
+	$query->bindValue(2, $_POST['to_id'], PDO::PARAM_INT);
+	$query->bindValue(3, $_POST['subject'], PDO::PARAM_STR);
+	$query->bindValue(4, $_POST['message'], PDO::PARAM_STR);
+	$query->execute();
+}
+
+//This deletes an image/
+if(isset($_POST['id']) && isset($_POST['type']) && isset($_POST['owner']) && $_POST['type'] == 'delete_image'){
+	$query = $con->prepare("SELECT * FROM images WHERE id = ?");
+	$query->bindValue(1, $_POST['id'], PDO::PARAM_INT);
+	$query->execute();
+	
+	$row = $query->fetch(PDO::FETCH_ASSOC);
+	
+	$query2 = $con->prepare("DELETE FROM images WHERE id = ?");
+	$query2->bindValue(1, $_POST['id'], PDO::PARAM_INT);
+	$query2->execute();
+	
+	$shell = shell_exec('rm images/user_images/'.$_POST['owner'].'/'.$row['filename']);
+	
+	//echo $shell;
+}
+
+//This pushes image to the front of the reel/
+if(isset($_POST['id']) && isset($_POST['user_id']) && isset($_POST['type']) && $_POST['type'] == 'image_push'){
+	$query = $con->prepare("UPDATE images SET order_img = order_img + 1 WHERE owner=?");
+	$query->bindValue(1, $_POST['user_id'], PDO::PARAM_INT);
+	$query->execute();
+	
+	$query = $con->prepare("UPDATE images SET order_img = 0 WHERE id=?");
+	$query->bindValue(1, $_POST['id'], PDO::PARAM_INT);
+	$query->execute();
+}
+
 ?>

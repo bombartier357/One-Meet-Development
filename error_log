@@ -1,0 +1,78 @@
+[01-Dec-2014 20:57:58 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'botcry5_trader'@'localhost' (using password: YES)' in /home/botcry5/public_html/live/loginUserClass.php:17
+Stack trace:
+#0 /home/botcry5/public_html/live/loginUserClass.php(17): PDO->__construct('mysql:host=loca...', 'botcry5_trader', 'subarubrz', Array)
+#1 /home/botcry5/public_html/live/index.php(15): loginUserClass->__construct('Nihithilak', 'buzzcut')
+#2 {main}
+  thrown in /home/botcry5/public_html/live/loginUserClass.php on line 17
+[01-Dec-2014 20:59:01 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'botcry5_trader'@'localhost' (using password: YES)' in /home/botcry5/public_html/live/loginUserClass.php:17
+Stack trace:
+#0 /home/botcry5/public_html/live/loginUserClass.php(17): PDO->__construct('mysql:host=loca...', 'botcry5_trader', 'subarubrz', Array)
+#1 /home/botcry5/public_html/live/index.php(15): loginUserClass->__construct('Nihithilak', 'buzzcut')
+#2 {main}
+  thrown in /home/botcry5/public_html/live/loginUserClass.php on line 17
+[02-Dec-2014 18:14:44 America/Los_Angeles] PHP Parse error:  syntax error, unexpected T_STRING, expecting ',' or ';' in /home/botcry5/public_html/live/constructUserClass.php on line 321
+[02-Dec-2014 18:14:48 America/Los_Angeles] PHP Parse error:  syntax error, unexpected T_STRING, expecting ',' or ';' in /home/botcry5/public_html/live/constructUserClass.php on line 321
+[02-Dec-2014 18:15:07 America/Los_Angeles] PHP Parse error:  syntax error, unexpected T_STRING, expecting ',' or ';' in /home/botcry5/public_html/live/constructUserClass.php on line 321
+[02-Dec-2014 19:17:10 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 19:17:32 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:04:35 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:10:21 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:11:41 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:11:59 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:12:09 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:12:44 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:15:01 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:17:08 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:19:15 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:20:13 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:33:19 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:34:24 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:35:31 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:36:22 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:37:01 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:45:21 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:45:48 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 20:46:00 America/Los_Angeles] PHP Fatal error:  Class 'finfo' not found in /home/botcry5/public_html/live/actions.php on line 40
+[02-Dec-2014 21:24:02 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2005] Unknown MySQL server host '$host' (25)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=$hos...', '$user', '$pass', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:25:05 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2005] Unknown MySQL server host '$host' (25)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=$hos...', '$user', '$pass', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:25:53 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2005] Unknown MySQL server host '$host' (25)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=$hos...', '$user', '$pass', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:26:26 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2005] Unknown MySQL server host '$host' (25)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=$hos...', '$user', '$pass', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:28:45 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'botcry5_trader'@'localhost' (using password: YES)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=loca...', 'botcry5_trader', 'subarubrz', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:29:05 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'botcry5_trader'@'localhost' (using password: YES)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=loca...', 'botcry5_trader', 'subarubrz', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:30:06 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'botcry5'@'localhost' (using password: YES)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=loca...', 'botcry5', 'subarubrz', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:30:25 America/Los_Angeles] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[28000] [1045] Access denied for user 'botcry5'@'localhost' (using password: YES)' in /home/botcry5/public_html/live/actions.php:12
+Stack trace:
+#0 /home/botcry5/public_html/live/actions.php(12): PDO->__construct('mysql:host=loca...', 'botcry5', 'subarubrz', Array)
+#1 {main}
+  thrown in /home/botcry5/public_html/live/actions.php on line 12
+[02-Dec-2014 21:31:15 America/Los_Angeles] PHP Fatal error:  Using $this when not in object context in /home/botcry5/public_html/live/actions.php on line 14
+[02-Dec-2014 21:31:39 America/Los_Angeles] PHP Fatal error:  Using $this when not in object context in /home/botcry5/public_html/live/actions.php on line 14
+[03-Dec-2014 05:57:37 America/Los_Angeles] PHP Parse error:  syntax error, unexpected '}' in /home/botcry5/public_html/live/constructUserClass.php on line 73

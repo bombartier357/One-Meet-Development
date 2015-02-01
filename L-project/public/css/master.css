@@ -1,0 +1,200 @@
+
+#body{
+margin-top:-20px;
+}
+/*---------------------------------------------------------------======================MASTER=======================-----------------------------------------------------------------*/
+
+
+#logo{
+border:1px solid #cacaca;
+}
+
+#nav{
+
+}
+
+#home-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#profile-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#matches-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#search-link{
+border:1px solid #cacaca;
+text-align: center;
+}
+
+#body{
+
+height:800px;
+width:100%;
+}
+
+#footer{
+border:1px solid #cacaca;
+height:125px;
+width:100%;
+background-color:white;
+}
+
+/*------------------------------------------------------===================================HOME==========================----------------------------------------------------------------------*/
+#stats{
+
+}
+#views{
+border:1px solid #cacaca;
+background-color:white;
+height:800px;
+}
+
+#mail-window{
+
+}
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++VIDEO+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+#remoteVideos video {
+	float:left;
+}
+
+#local-attributes {
+	float:left;
+	width:100%;
+}
+
+#localVideo {
+	height: 150px;
+}
+#video-favorites{
+	border: 1px solid #cacaca;
+	background-color:white;
+	height:649px;
+}
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++FAVORITES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+#favorites{
+	border:1px solid #cacaca;
+	height:800px;
+	margin-left:-15px;
+	background-color:white;
+}
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++CHAT ROOMS+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+#chat-rooms{
+	background-color:white;
+	height:766px;
+	width:83.3%;
+	float:left;
+	margin-left:-15px;
+}
+
+#room-display {
+	max-height: 800px; /* sets max-height value for all standards-compliant browsers */
+}
+
+/*------------------------------------------------------===================================PROFILE==========================----------------------------------------------------------------------*/
+#profile-image{
+border:1px solid #cacaca;
+height:300px;
+width:300px;
+}
+
+.extra-images{
+border:1px solid #cacaca;
+height:300px;
+width:300px;
+float:left;
+}
+
+#interest-display{
+border:1px solid #cacaca;
+}
+
+#age-display{
+border:1px solid #cacaca;
+}
+
+#image-reel{
+background-color:white;
+height:458px;
+}
+
+#image-display{
+border:1px solid #cacaca;
+width:100%;
+height:300px;
+overflow-y: hidden;
+overflow-x: scroll;
+background-color:white;
+}
+
+#window-interests{
+	background-color:#cacaca;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++CROPPER+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+.cropper {
+    position: relative;
+    cursor: crosshair;
+}
+.cropper-area-handle {
+    width: 6px;
+    height: 6px;
+    background: yellow;
+}
+.cropper-overlay {
+    background: black;
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
+
+/*------------------------------------------------------===================================MATCHES==========================----------------------------------------------------------------------*/
+
+#matches{
+border:1px solid #cacaca;
+height:800px;
+background-color:white;
+}
+
+#pic-1{
+border:1px solid #cacaca;
+text-align: center;
+height:750px;
+}
+
+#pic-2{
+border:1px solid #cacaca;
+text-align: center;
+height:750px;
+}
+
+#matching-chars{
+border:1px solid #cacaca;
+text-align: center;
+height:750px;
+}
+
+/*------------------------------------------------------===================================SEARCH==========================----------------------------------------------------------------------*/
+#search{
+border:1px solid #cacaca;
+}
+
+#search-results{
+border:1px solid #cacaca;
+background-color:white;
+height:720px;
+overflow-y: scroll;
+overflow-x: hidden;
+}
