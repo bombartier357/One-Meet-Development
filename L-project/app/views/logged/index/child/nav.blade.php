@@ -81,7 +81,7 @@
 							<i class="fa fa-level-up"></i>
 						</button>
 						
-						<button ng-click='acceptToggle(push.id, "push");' id="push-from-accepted-button-{[{push.id}]}" class="btn btn-{[{push.from_accepted}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='acceptToggle(push.id, "push");' id="push-from-accepted-button-{[{push.id}]}" class="btn btn-{[{push.from_accepted}]} btn-small {[{push.push_accept_disabled}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-down"></i>
 						</button>
 						<button id="push-to-accepted-button-{[{push.id}]}" class="btn btn-{[{push.to_accepted}]} btn-small disabled" style="float:right;border:2px solid #cacaca;">
@@ -117,7 +117,7 @@
 						<button id="pull-from-accepted-button-{[{pull.id}]}" class="btn btn-{[{pull.from_accepted}]} btn-small disabled" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-down"></i>
 						</button>
-						<button ng-click='acceptToggle(pull.id, "pull");' id="pull-to-accepted-button-{[{pull.id}]}" class="btn btn-{[{pull.to_accepted}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='acceptToggle(pull.id, "pull");' id="pull-to-accepted-button-{[{pull.id}]}" class="btn btn-{[{pull.to_accepted}]} btn-small {[{pull.pull_accept_disabled}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-up"></i>
 						</button>
 					</td>
@@ -280,7 +280,7 @@
 				</br>
 				Repayment Starting: {[{loan_details.starting}]}
 				</br>
-				Your contribution: <span id='loan-confirm-contribution'></span>{[{loan_details.currency}]}
+				Your contribution: <span id='loan-confirm-contribution'></span>{[{loan_details.currency}]} <span id='display-calced-btc-amount'></span>
 				</br>
 				<button ng-click='loanFinalConfirm();' id='loan-final-confirm' class='btn btn-default'>Accept</button>
 			</div>

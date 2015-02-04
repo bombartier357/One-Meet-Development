@@ -1,6 +1,17 @@
 <?php
 
 class AjaxCtrl extends BaseController {
+	
+	//Coinbase
+	private $coinbase_key = 'PUVYS9Cz18qAH4SO';
+	private $coinbase_secret = 'KngZUtf3UDRsc5LF02nDTVUOkJJFKhKX';
+	public $coinbase_price;
+	
+	public function __construct(){
+		require_once("Coinbase.php");
+		$coinbase = Coinbase::withApiKey($this->coinbase_key, $this->coinbase_secret);
+		$this->coinbase_price = $coinbase->getBuyPrice('1');
+	}
 
 
 	public function make_favorite()
@@ -128,7 +139,7 @@ class AjaxCtrl extends BaseController {
 	public function get_chat($room_id)
 	{
 		$final_rows = array();
-		$chat = Chats::where('room_id', '=', $room_id)->orderBy('created_at')->get();
+		$chat = Chats::where('room_id', '=', $room_id)->orderBy('created_at', 'desc')->take(10)->get();
 		
 		foreach($chat as $rows){
 			$user = Users::find($rows->sender_id);
@@ -351,21 +362,32 @@ class AjaxCtrl extends BaseController {
 		//echo $diff->m."</br>";
 		//echo $diff->d;
 		
-		$subLoan = subLoans::where('loan_id', '=', $loan_id)->get();
+		$borrower_update_coins = Users::find($loan->owner);
+		if($loan->peg_dollar == 0 && $borrower_update_coins->temp_coins >= $amount){
+			$borrower_update_coins->temp_coins = $borrower_update_coins->temp_coins - $amount;
+		}elseif($loan->peg_dollar == 1 && $borrower_update_coins->temp_coins >= ($amount / $this->coinbase_price)){
+			$borrower_update_coins->temp_coins = $borrower_update_coins->temp_coins - ($amount / $this->coinbase_price * 1000000);
+		}else{
+			die('You do not have enough bitcoins to make a payment!');
+		}
+		$borrower_update_coins->save();
 		
+		$subLoan = subLoans::where('loan_id', '=', $loan_id)->get();
 		$total_sub_amount = 0;
 		foreach($subLoan as $sub){
 			$sub_amount = $sub->amount * $interest / 100 + ($sub->amount / $loan->period_count);
 			$total_sub_amount = $total_sub_amount + $sub_amount;
 			
 			$lender_update_coins = Users::find($sub->owner_id);
-			$lender_update_coins->temp_coins = $lender_update_coins->temp_coins + $sub_amount;
+			if($loan->peg_dollar == 0){
+				$lender_update_coins->temp_coins = $lender_update_coins->temp_coins + $sub_amount;
+				Transactions::create(array('from_id'=>$loan->owner, 'to_id'=>$sub->owner_id, 'type'=>'push', 'from_accepted'=>1, 'to_accepted'=>1, 'amount'=>$sub_amount));
+			}else{
+				$lender_update_coins->temp_coins = $lender_update_coins->temp_coins + ($sub_amount / $this->coinbase_price * 1000000);
+				Transactions::create(array('from_id'=>$loan->owner, 'to_id'=>$sub->owner_id, 'type'=>'push', 'from_accepted'=>1, 'to_accepted'=>1, 'amount'=>($sub_amount / $this->coinbase_price * 1000000)));
+			}
 			$lender_update_coins->save();
 		}
-		
-		$borrower_update_coins = Users::find($loan->owner);
-		$borrower_update_coins->temp_coins = $borrower_update_coins->temp_coins - $amount;
-		$borrower_update_coins->save();
 		
 		if($loan->peg_dollar == 0){
 			$amount = $amount / 100000000;
@@ -420,6 +442,11 @@ class AjaxCtrl extends BaseController {
 				$to_accepted_button = 'success';
 			}
 			
+			if($transaction->from_accepted == 0 && $transaction->to_accepted == 0){
+				$from_accepted_button = 'danger';
+				$to_accepted_button = 'danger';
+			}
+			
 			if($transaction->from_rating == 0){
 				$from_rating_button = 'default';
 			}elseif($transaction->from_rating == 0){
@@ -448,7 +475,13 @@ class AjaxCtrl extends BaseController {
 				$to_comment_button = 'success';
 			}
 			
-			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at));
+			if($transaction->from_accepted == 1 && $transaction->to_accepted == 1){
+				$push_accept_disabled = 'disabled';
+			}else{
+				$push_accept_disabled = '';
+			}
+			
+			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at, 'push_accept_disabled'=>$push_accept_disabled));
 		$counter++;
 		}
 		return $return_array;
@@ -475,6 +508,11 @@ class AjaxCtrl extends BaseController {
 				$to_accepted_button = 'success';
 			}
 			
+			if($transaction->from_accepted == 0 && $transaction->to_accepted == 0){
+				$from_accepted_button = 'danger';
+				$to_accepted_button = 'danger';
+			}
+			
 			if($transaction->from_rating == 0){
 				$from_rating_button = 'default';
 			}elseif($transaction->from_rating == 0){
@@ -503,7 +541,13 @@ class AjaxCtrl extends BaseController {
 				$to_comment_button = 'success';
 			}
 			
-			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at));
+			if($transaction->from_accepted == 1 && $transaction->to_accepted == 1){
+				$pull_accept_disabled = 'disabled';
+			}else{
+				$pull_accept_disabled = '';
+			}
+			
+			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at, 'pull_accept_disabled'=>$pull_accept_disabled));
 		$counter++;
 		}
 		return $return_array;
@@ -746,24 +790,57 @@ class AjaxCtrl extends BaseController {
 	
 	//Final take loan confirmation
 	public function loan_final_confirm(){
+		$my_id = Input::get('my_id');
 		$loan_id = Input::get('loan_id');
 		$owner = Input::get('owner');
 		$amount = Input::get('amount');
 		$currency = Input::get('currency');
+		$fail = 0;
 		
 		$master_loan = Loans::where('id', '=', $loan_id)->first();
-		$slave_loans = subLoans::where('loan_id', '=', $loan_id)->sum('amount');
+		$slave_loans = subLoans::where('loan_id', '=', $loan_id);
+		$subs_amount = $slave_loans->sum('amount');
 		
-		if($slave_loans + $amount >= $master_loan->amount){
-			Loans::where('id', '=', $loan_id)->update(array('funded'=>1));
+		if($subs_amount + $amount >= $master_loan->amount){
+			Loans::where('id', '=', $loan_id)->update(array('funded'=>1, 'peg_price'=>$this->coinbase_price));
+			
+			if($master_loan->peg_dollar == 0){
+				$borrower = Users::find($master_loan->owner);
+				$borrower->temp_coins = $borrower->temp_coins + $master_loan->amount;
+				$borrower->save();
+			}else{
+				$borrower = Users::find($master_loan->owner);
+				$borrower->temp_coins = $borrower->temp_coins + ($master_loan->amount / $this->coinbase_price);
+				$borrower->save();
+			}
 		}
 		
-		subLoans::create(array(
-			'loan_id'=>$loan_id,
-			'owner_id'=>$owner,
-			'amount'=>$amount,
-			'currency'=>$currency
-		));
+		$lender = Users::find($my_id);
+		
+		if($master_loan->peg_dollar == 0){
+			if($lender->temp_coins >= $amount){
+				$lender->temp_coins = $lender->temp_coins - $amount;
+				$lender->save();
+			}else{
+				$fail = 1;
+			}
+		}else{
+			if($lender->temp_coins >= ($amount / $this->coinbase_price)){
+				$lender->temp_coins = $lender->temp_coins - ($amount / $this->coinbase_price);
+				$lender->save();
+			}else{
+				$fail = 1;
+			}
+		}
+		
+		if($fail == 0){
+			subLoans::create(array(
+				'loan_id'=>$loan_id,
+				'owner_id'=>$owner,
+				'amount'=>$amount,
+				'currency'=>$currency
+			));
+		}
 		
 	}
 	

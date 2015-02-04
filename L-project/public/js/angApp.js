@@ -256,15 +256,15 @@ console.log('angApp.js loaded!');
 						var amount3 = amount2.toFixed(2);
 					}
 					
-					if(time == 0){
+					//if(time == 0){
 						//console.log(diff.getUTCFullYear() - 1970);
 						//console.log(diff.getUTCMonth());
 						//console.log(diff.getUTCDate() - 1);
-					}else{
+					//}else{
 						//console.log(diff.getUTCFullYear() - 1970);
 						//console.log(diff.getUTCMonth());
 						//console.log(diff.getUTCDate() + 1);
-					}
+					//}
 					
 					//console.log(nextDate);
 					swal({title:"Make loan payment?", text:("Are you sure you would like to make a payment now?  This will be irriversible. \n\nAmount : "+amount3+" "+loan_details.currency+" \nOriginal Amount : "+loan_details.amount+" "+loan_details.currency+" \nInterest : "+interest+"% \nTotal Completed Payments : "+loan_details.payments_ontime+" \nTotal Late Payments : "+loan_details.payments_late+" \nPayments Remaining : "+(loan_details.period_count - (loan_details.payments_ontime + loan_details.payments_late))+" \nPayment Status : "+status+" \n\nNext Payment Due : \n"+nextDate+" \n\nScheduled Last Payment : \n"+lastDate), type:"warning", showCancelButton: true, confirmButtonText: "Yes, make payment.", closeOnConfirm: false, closeOnCancel: true}, function(){
@@ -352,7 +352,11 @@ console.log('angApp.js loaded!');
 				var loan_contribution = $('#input-loan-contribution').val();	
 			}else{
 				var loan_contribution = $('#input-loan-contribution-peg-dollar').val();
+				var calc = (loan_contribution / $('#coinbase-price').val());
+				var btc_calced = calc.toFixed(8);
+				$('#display-calced-btc-amount').text('or '+btc_calced+' btc @ $'+coinbase_price);
 			}
+			
 			$('#loan-confirm-contribution').text(loan_contribution);
 				$("#take-loan-confirm").dialog({
 						//autoOpen: true,
@@ -371,6 +375,7 @@ console.log('angApp.js loaded!');
 			
 			var loan_contribution;
 			var currency_val;
+			var peg_price;
 			if(currency == 1){
 				loan_contribution = $('#input-loan-contribution-peg-dollar').val();
 				currency_val = 'usd';
@@ -384,9 +389,9 @@ console.log('angApp.js loaded!');
 			$http({
 					url: '/L-project/public/logged/ajax/loan_final_confirm',
 					method: "POST",
-					data: {"loan_id":loan_id, 'owner':my_id, 'amount':loan_contribution, 'currency':currency}
+					data: {"loan_id":loan_id, 'owner':my_id, 'amount':loan_contribution, 'currency':currency, 'my_id':my_id}
 				}).success(function(data, status, headers, config) {
-					swal('Loan Funded!',('You have funded '+(loan_contribution / 100000000)+' '+currency_val+' of '+master_loan_data.amount+' '+currency_val+'.'), 'success');
+					swal('Loan Funded!',('You have funded '+loan_contribution+' '+currency_val+' of '+master_loan_data.amount+' '+currency_val+'.'), 'success');
 					$("#take-loan-confirm").dialog('close');
 					$('#open-loans').show();
 					$('#lending-details').hide();
@@ -1025,6 +1030,7 @@ console.log('angApp.js loaded!');
 					  }
 				}).error(function(data, status, headers, config) {
 					//$scope.status = status;
+					console.log(data);
 					swal("Something went wrong!", "There was an error while adding this user to your favorites.  If this error persists, please contact the site administrator.", "error");
 				});
 	

@@ -63,16 +63,16 @@
 					<td ng-click="nav_profile({{ $list['id'] }});">{{$list['user']}}</td><td ng-click="nav_profile({{ $list['id'] }});">{{$list['sex']}}</td>
 					<td>
 						<div style='float:right;'>
-							<button id='make-favorite{{$list["id"]}}' onclick='make_favorite({{$list["id"]}},1);' type='button' class='{{ $list["button1"] }} btn-lg'>
+							<button id='make-favorite{{$list["id"]}}' ng-click='make_favorite({{ $list["id"] }},1);' type='button' class='{{ $list["button1"] }} btn-lg'>
 								<span class='glyphicon glyphicon-star' aria-hidden='true'></span>
 							</button>
-							<button id='make-message{{$list["id"]}}' onclick='make_favmail({{$list["id"]}},1);' type='button' class='{{ $list["button2"] }} btn-lg'>
+							<button id='make-message{{$list["id"]}}' ng-click='make_favmail({{ $list["id"] }},1);' type='button' class='{{ $list["button2"] }} btn-lg'>
 								  <span class='glyphicon glyphicon-envelope' aria-hidden='true'></span>
 							</button>
-							<button id='make-chat{{$list["id"]}}' onclick='make_favchat({{$list["id"]}},1);' type='button' class='{{ $list["button3"] }} btn-lg'>
+							<button id='make-chat{{$list["id"]}}' ng-click='make_favchat({{ $list["id"] }},1);' type='button' class='{{ $list["button3"] }} btn-lg'>
 								  <span class='glyphicon glyphicon-comment' aria-hidden='true'></span>
 							</button>
-							<button id='make-video{{$list["id"]}}' onclick='make_favvideo({{$list["id"]}},1)' type='button' class='{{ $list["button4"] }} btn-lg'>
+							<button id='make-video{{$list["id"]}}' ng-click='make_favvideo({{ $list["id"] }},1)' type='button' class='{{ $list["button4"] }} btn-lg'>
 								  <span class='glyphicon glyphicon-facetime-video' aria-hidden='true'></span>
 							</button>
 						</div>

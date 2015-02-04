@@ -213,12 +213,14 @@ class LoggedHomeCtrl extends BaseController {
 			}
 			
 		$make_chatroom = DB::table('chat_rooms_schema')->where('owner_id', '=', $this->id)->where('type', '=', 'home')->first();
-		$this->room = $make_chatroom->id;
+		
 		
 		//Makes sure that a personal chatroom is created for this user
 		if(!$make_chatroom){
 			$create_chatroom = Rooms::create(array('owner_id'=>$this->id, 'room_name'=>$this->user_name, 'type'=>'home'));
 			$this->room = $create_chatroom->id;
+		}else{
+			$this->room = $make_chatroom->id;
 		}
 		
 		//This sets global nav variables
