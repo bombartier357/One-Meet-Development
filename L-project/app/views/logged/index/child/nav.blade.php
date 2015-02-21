@@ -5,7 +5,8 @@
 		<a style="color:blue;" href="{{ URL::route('logged-home') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;margin-left:20px;width:100px;' id='home-link'>Home</button></a>
 		<a style="color:blue;" href="{{ URL::route('logged-profile') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:100px;' id='profile-link'>Profile</button></a>
 		<a style="color:blue;" href="{{ URL::route('logged-search') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:100px;' id='search-link'>Search</button></a>
-		<div style='margin-left:275px;margin-top:-43px;'><p style="color:#cacaca;" class="navbar-text"><span style='float:left;color:#cacaca;margin-left:75px;'>Logged in as {{ $user_name }}</span><span style='margin-left:50px;'><i class='fa fa-bitcoin'></i> {{ $btc_balance }}</span><span style='margin-left:75px;'>Wallet Transactions: {{ $btc_txs }}</span><span style='margin-left:30px;'>Total Received: {{ $btc_total_received }}</span><span style='margin-left:30px;'>Total Spent: {{ $btc_total_sent }}</span><span style='margin-left:75px;'><font size='0'>Account Address: {{ $btc_address }}</font></span></p></div>
+		<a style="color:blue;" href="{{ URL::route('provider-directory') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:200px;' id='provider-directory'>Provider Directory</button></a>
+		<div style='margin-left:275px;margin-top:-43px;'><p style="color:#cacaca;display:none;" class="navbar-text"><span style='float:left;color:#cacaca;margin-left:75px;'>Logged in as {{ $user_name }}</span><span style='margin-left:50px;'><i class='fa fa-bitcoin'></i> {{ $btc_balance }}</span><span style='margin-left:75px;'>Wallet Transactions: {{ $btc_txs }}</span><span style='margin-left:30px;'>Total Received: {{ $btc_total_received }}</span><span style='margin-left:30px;'>Total Spent: {{ $btc_total_sent }}</span><span style='margin-left:75px;'><font size='0'>Account Address: {{ $btc_address }}</font></span></p></div>
 		<ul class='nav nav-pills' style='float:right;margin-top:3px;'>
 			<li role='presentation'>
 			<button id='nav-mail' ng-click='nav_mail();' type='button' class='btn btn-default btn-lg' style='float:right;border:2px solid #cacaca;'>
@@ -13,7 +14,7 @@
 			</button>
 			</li>
 			<li role='presentation'>
-			<button id='nav-bitcoin' ng-click='nav_bitcoin();' type='button' class='btn btn-default btn-lg' style='float:right;border:2px solid #cacaca;'>
+			<button id='nav-bitcoin' ng-click='nav_bitcoin();' type='button' class='btn btn-default btn-lg' style='float:right;border:2px solid #cacaca;display:none;'>
 			  <i class='fa fa-bitcoin'></i>
 			</button>
 			</li>
@@ -64,24 +65,24 @@
 				<tr><th>To User</th><th>Amount</th><th>Status</th></tr>
 				<tr ng-repeat='push in pushData'><td>{[{push.to_id}]}</td><td>{[{push.amount / 100000000}]} btc</td>
 					<td id='push-buttons'>
-						<button id="push-from-comment-button" class="btn btn-{[{push.from_comment}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button id="push-from-comment-button" class="btn btn-{[{push.from_comment}]} btn-small {[{push.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-comments"></i>
 						</button>
-						<button id="push-to-comment-button" class="btn btn-{[{push.to_comment}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button id="push-to-comment-button" class="btn btn-{[{push.to_comment}]} btn-small {[{push.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-comments"></i>
 						</button>
 						
-						<button id="push-from-rating-button" class="btn btn-{[{push.from_rating}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='voteRating(1, "push", push.id);' id="push-from-rating-button" class="btn btn-{[{push.from_rating2}]} btn-small {[{push.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-down"></i>
 						</button>
-						<button id="push-exchange-button" class="btn btn-default btn-small" style="float:right;border:2px solid #cacaca;">
+						<button id="push-exchange-button" class="btn btn-{[{push.to_rating}]} btn-small {[{push.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-exchange"></i>
 						</button>
-						<button id="push-to-rating-button" class="btn btn-{[{push.to_rating}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='voteRating(2, "push", push.id);' id="push-to-rating-button" class="btn btn-{[{push.from_rating}]} btn-small {[{push.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-up"></i>
 						</button>
 						
-						<button ng-click='acceptToggle(push.id, "push");' id="push-from-accepted-button-{[{push.id}]}" class="btn btn-{[{push.from_accepted}]} btn-small {[{push.push_accept_disabled}]}" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='acceptToggle(push.id, "push");' id="push-from-accepted-button-{[{push.id}]}" class="btn btn-{[{push.from_accepted}]} btn-small {[{push.push_accept_disabled}]} {[{push.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-down"></i>
 						</button>
 						<button id="push-to-accepted-button-{[{push.id}]}" class="btn btn-{[{push.to_accepted}]} btn-small disabled" style="float:right;border:2px solid #cacaca;">
@@ -97,27 +98,27 @@
 				<tr><th>From User</th><th>Amount</th><th>Status</th></tr>
 				<tr ng-repeat='pull in pullData'><td>{[{pull.from_id}]}</td><td>{[{pull.amount / 100000000}]} btc</td>
 					<td id='pull-buttons'>
-						<button id="pull-from-comment-button" class="btn btn-{[{pull.from_comment}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button id="pull-from-comment-button" class="btn btn-{[{pull.from_comment}]} btn-small {[{pull.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-comments"></i>
 						</button>
-						<button id="pull-to-comment-button" class="btn btn-{[{pull.to_comment}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button id="pull-to-comment-button" class="btn btn-{[{pull.to_comment}]} btn-small {[{pull.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-comments"></i>
 						</button>
 						
-						<button id="pull-from-rating-button" class="btn btn-{[{pull.from_rating}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='voteRating(1, "pull", pull.id);' id="pull-from-rating-button" class="btn btn-{[{pull.from_rating}]} btn-small {[{pull.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-down"></i>
 						</button>
-						<button id="pull-exchange-button" class="btn btn-default btn-small" style="float:right;border:2px solid #cacaca;">
+						<button id="pull-exchange-button" class="btn btn-default btn-small {[{pull.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-exchange"></i>
 						</button>
-						<button id="pull-to-rating-button" class="btn btn-{[{pull.to_rating}]} btn-small" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='voteRating(2, "pull", pull.id);' id="pull-to-rating-button" class="btn btn-{[{pull.to_rating}]} btn-small {[{pull.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-up"></i>
 						</button>
 						
 						<button id="pull-from-accepted-button-{[{pull.id}]}" class="btn btn-{[{pull.from_accepted}]} btn-small disabled" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-down"></i>
 						</button>
-						<button ng-click='acceptToggle(pull.id, "pull");' id="pull-to-accepted-button-{[{pull.id}]}" class="btn btn-{[{pull.to_accepted}]} btn-small {[{pull.pull_accept_disabled}]}" style="float:right;border:2px solid #cacaca;">
+						<button ng-click='acceptToggle(pull.id, "pull");' id="pull-to-accepted-button-{[{pull.id}]}" class="btn btn-{[{pull.to_accepted}]} btn-small {[{pull.pull_accept_disabled}]} {[{pull.disable_all}]}" style="float:right;border:2px solid #cacaca;">
 							<i class="fa fa-level-up"></i>
 						</button>
 					</td>

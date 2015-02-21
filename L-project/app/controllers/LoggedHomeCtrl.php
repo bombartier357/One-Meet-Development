@@ -703,6 +703,41 @@ class LoggedHomeCtrl extends BaseController {
 		return App::abort(404);
 	}
 	
+	//Directory Page
+	public function get_home_directory()
+	{
+		$doctors_array = array();
+		
+		/*DB::table('directory_schema')->chunk(100, function($doctors)
+		{
+			
+			$doctors_array = array();
+			$i = 0;
+			
+			foreach($doctors as $doctor){
+				$doctors_array = array_add($doctors_array, $doctor->id, array('id'=>$doctor->id,'name'=>$doctor->name, 'address'=>$doctor->address, 'specialty'=>$doctor->specialty, 'sub_specialty'=>$doctor->sub_specialty, 'phone'=>$doctor->phone));
+				$i++;
+					
+					
+			}
+			
+			return View::make('logged.index.directory', $this->nav_variables
+			)->with('doctors_list', $doctors_array)
+			->with('mail_rows', $this->new_mail_array);
+		
+		});*/
+		
+		$doctors = DB::table('directory_schema')->take(100)->get();
+		
+		foreach($doctors as $doctor){
+				$doctors_array = array_add($doctors_array, $doctor->id, array('id'=>$doctor->id,'name'=>$doctor->name, 'address'=>$doctor->address, 'specialty'=>$doctor->specialty, 'sub_specialty'=>$doctor->sub_specialty, 'phone'=>$doctor->phone));
+			}
+			
+		return View::make('logged.index.directory', $this->nav_variables
+			)->with('doctors_list', $doctors_array)
+			->with('mail_rows', $this->new_mail_array);
+	}
+	
 	//Home page
 	public function get_home_search()
 	{

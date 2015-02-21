@@ -52,6 +52,8 @@ Route::get('logged/profile', array('before'=>'escape', 'as'=>'logged-profile', '
 
 Route::get('logged/search', array('before'=>'escape', 'as'=>'logged-search', 'uses'=>'LoggedHomeCtrl@get_home_search'));
 
+Route::get('logged/directory', array('before'=>'escape', 'as'=>'provider-directory', 'uses'=>'LoggedHomeCtrl@get_home_directory'));
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////AJAX////////////////////////////////////////////////////
@@ -81,6 +83,7 @@ Route::post('logged/ajax/loan_final_confirm', array('before'=>'escape', 'as'=>'a
 Route::post('logged/ajax/list_open_loans', array('before'=>'escape', 'as'=>'ajax-list-open-loans', 'uses'=>'AjaxCtrl@list_open_loans'));
 Route::post('logged/ajax/get_lending_stats', array('before'=>'escape', 'as'=>'ajax-get-lending-stats', 'uses'=>'AjaxCtrl@get_lending_stats'));
 Route::post('logged/ajax/get_borrowing_stats', array('before'=>'escape', 'as'=>'ajax-get-borrowing-stats', 'uses'=>'AjaxCtrl@get_borrowing_stats'));
+Route::post('logged/ajax/vote_rating', array('before'=>'escape', 'as'=>'ajax-vote-rating', 'uses'=>'AjaxCtrl@vote_rating'));
 Route::post('logged/ajax/mail_details', array('before'=>'escape', 'as'=>'ajax-mail-details', 'uses'=>'AjaxCtrl@retrieve_mail_details'));
 Route::post('logged/ajax/logged_room', array('before'=>'escape', 'as'=>'ajax-mark-logged-room', 'uses'=>'AjaxCtrl@logged_room'));
 Route::post('logged/ajax/create_room', array('before'=>'escape', 'as'=>'ajax-create-room', 'uses'=>'AjaxCtrl@create_room'));

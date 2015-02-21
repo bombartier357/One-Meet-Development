@@ -421,6 +421,24 @@ class AjaxCtrl extends BaseController {
 		return $transaction;
 	}
 	
+	//Set ratings for transactions
+	public function vote_rating(){
+		$my_id = Input::get('id');
+		$transaction_id = Input::get('vote_id');
+		$type = Input::get('type');
+		$direction = Input::get('direction');
+		
+		$transaction = Transactions::find($transaction_id);
+
+		if($type == 'push'){
+			$transaction->from_rating = $direction;
+		}else{
+			$transaction->to_rating = $direction;
+		}
+		
+		$transaction->save();
+	}
+	
 	//Get push transactions
 	public function get_push_transactions(){
 		$return_array = array();
@@ -430,6 +448,7 @@ class AjaxCtrl extends BaseController {
 		$transactions = Transactions::where('from_id', '=', $my_id)->where('type', '=', 'push')->get();
 		
 		foreach($transactions as $transaction){
+			$disable_all = '';
 			if($transaction->from_accepted == 0){
 				$from_accepted_button = 'default';
 			}else{
@@ -445,22 +464,31 @@ class AjaxCtrl extends BaseController {
 			if($transaction->from_accepted == 0 && $transaction->to_accepted == 0){
 				$from_accepted_button = 'danger';
 				$to_accepted_button = 'danger';
+				$disable_all = 'disabled';
 			}
 			
 			if($transaction->from_rating == 0){
 				$from_rating_button = 'default';
-			}elseif($transaction->from_rating == 0){
-				$from_rating_button	= 'danger';
+			}elseif($transaction->from_rating == 1){
+				$from_rating_button	= 'default';
 			}else{
-				$from_rating_button = 'warning';
+				$from_rating_button = 'success';
+			}
+			
+			if($transaction->from_rating == 0){
+				$from_rating_button2 = 'default';
+			}elseif($transaction->from_rating == 1){
+				$from_rating_button2	= 'danger';
+			}else{
+				$from_rating_button2 = 'default';
 			}
 			
 			if($transaction->to_rating == 0){
 				$to_rating_button = 'default';
-			}elseif($transaction->to_rating == 0){
+			}elseif($transaction->to_rating == 1){
 				$to_rating_button	= 'danger';
 			}else{
-				$to_rating_button = 'warning';
+				$to_rating_button = 'success';
 			}
 			
 			if($transaction->from_comment == ''){
@@ -481,7 +509,7 @@ class AjaxCtrl extends BaseController {
 				$push_accept_disabled = '';
 			}
 			
-			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at, 'push_accept_disabled'=>$push_accept_disabled));
+			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'from_rating2'=>$from_rating_button2, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at, 'push_accept_disabled'=>$push_accept_disabled, 'disable_all'=>$disable_all));
 		$counter++;
 		}
 		return $return_array;
@@ -496,6 +524,7 @@ class AjaxCtrl extends BaseController {
 		$transactions = Transactions::where('to_id', '=', $my_id)->where('type', '=', 'push')->get();
 		
 		foreach($transactions as $transaction){
+			$disable_all = '';
 			if($transaction->from_accepted == 0){
 				$from_accepted_button = 'default';
 			}else{
@@ -511,6 +540,7 @@ class AjaxCtrl extends BaseController {
 			if($transaction->from_accepted == 0 && $transaction->to_accepted == 0){
 				$from_accepted_button = 'danger';
 				$to_accepted_button = 'danger';
+				$disable_all = 'disabled';
 			}
 			
 			if($transaction->from_rating == 0){
@@ -547,7 +577,7 @@ class AjaxCtrl extends BaseController {
 				$pull_accept_disabled = '';
 			}
 			
-			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at, 'pull_accept_disabled'=>$pull_accept_disabled));
+			$return_array = array_add($return_array, $counter, array('id'=>$transaction->id, 'from_id'=>$transaction->from_id, 'to_id'=>$transaction->to_id, 'amount'=>$transaction->amount, 'type'=>$transaction->type, 'from_accepted'=>$from_accepted_button, 'to_accepted'=>$to_accepted_button, 'from_rating'=>$from_rating_button, 'to_rating'=>$to_rating_button, 'from_comment'=>$from_comment_button, 'to_comment'=>$to_comment_button, 'created_at'=>$transaction->created_at, 'updated_at'=>$transaction->updated_at, 'pull_accept_disabled'=>$pull_accept_disabled, 'disable_all'=>$disable_all));
 		$counter++;
 		}
 		return $return_array;

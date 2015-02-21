@@ -167,6 +167,19 @@ console.log('angApp.js loaded!');
 		//Init functions
 		listOpenLoans();
 		
+		$scope.voteRating = function(direction, type, id){
+			$http({
+				url: '/L-project/public/logged/ajax/vote_rating',
+				method: "POST",
+				data: {"id":my_id, "vote_id":id, "type":type, "direction":direction}
+			}).success(function(data, status, headers, config) {
+				console.log(data);
+			}).error(function(data, status, headers, config) {
+				console.log(data);
+				swal("Something went wrong!", "There was an error in requesting loan information from the server.  If this error persists, please contact the site administrator.", "error");
+			});
+		}
+		
 		function update_borrowing_list(){
 			$http({
 				url: '/L-project/public/logged/ajax/get_borrowing_stats',
