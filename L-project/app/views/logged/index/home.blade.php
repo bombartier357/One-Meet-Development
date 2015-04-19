@@ -24,10 +24,55 @@
 	</div>
 </div>
 
-<div style='height:800px;background-color:white;margin-left:-15px;border:2px solid #cacaca;border-radius: 25px;' class='col-md-10' id='home-screen'>
-	<center>Welcome to One-Meet.  The goal of one meet is to bring people together.  Go ahead, find someone.</center>
+<style>
+.target-cell:hover{
+	background-color:red;
+}
+</style>
+<div id='game-master' style='height:800px;background-color:white;margin-left:-15px;border:2px solid #cacaca;border-radius: 25px;' class='col-md-10' id='home-screen'>
+	<style>
+		.target-cell:hover{
+			background-color:blue;
+		}
+	</style>
+	<center>Welcome to One-Meet.</br>Meet, play, exchange.</center>
+	<center>
+		<div ng-controller='LoginCtrl' style='width:500px;margin-top:100px;border:1px solid #cacaca;display:none;'>
+			<input type='text' id='username-login' placeholder='User' />
+			<input type='password' id='username-password' placeholder='Password' />
+			<button ng-click='loginUser();' class='btn btn-default'>Login</button>
+			<button class='btn btn-info'>Register</button>
+		</div>
+	</center>
+		
+		<div ng-controller='SotosholyCtrl' id='new-sotosholy-window' style='display:none;'>
+			<input style='width:200px;' type='number' min='0.01' max='5' step='0.01' id='sotosholy-bounty-input' placeholder='Game Bounty' />
+			<input style='width:100px;' type='number' min='2' max='4' step='1' id='sotosholy-max-player-input' placeholder='Max Players' />
+			<button ng-click='createJoinGame();' class='btn btn-success'>Create Game</button>
+		</div>
+						<center>
+							<div id='game-list' ng-controller='SotosholyCtrl' style='width:100%;height:100%;'>
+								<button ng-click='promptCreateGame();' style='float:right;' class='btn btn-success'>Create</button>
+								<div style='width:100%;height:100%;border:1px solid #cacaca;'>
+									<table class='table table-striped'>
+										<tr>Game List</tr>
+										<tr><th>Users</th><th>Bounty</th></tr>
+										<tr ng-repeat='games in gameList' ng-click='joinGame(games.id);'>
+											<td><span ng-bind='games.max_players'></span>/4</td>
+											<td><span ng-bind='games.bounty'></span> per player</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</center>
+						
+				
 </div>
 @stop
 
 @section('js_packages')
+@stop
+
+@section('hidden_variables')
+<input type='hidden' id='join-room' value='0' />
 @stop

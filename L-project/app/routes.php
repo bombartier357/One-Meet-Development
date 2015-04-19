@@ -89,6 +89,17 @@ Route::post('logged/ajax/logged_room', array('before'=>'escape', 'as'=>'ajax-mar
 Route::post('logged/ajax/create_room', array('before'=>'escape', 'as'=>'ajax-create-room', 'uses'=>'AjaxCtrl@create_room'));
 Route::post('logged/ajax/check_logged', array('before'=>'escape', 'as'=>'ajax-check-logged', 'uses'=>'AjaxCtrl@check_logged'));
 Route::post('logged/ajax/search', array('before'=>'escape', 'as'=>'ajax-make-search', 'uses'=>'AjaxCtrl@make_search'));
+Route::post('logged/ajax/search_directory', array('before'=>'escape', 'as'=>'ajax-make-search-directory', 'uses'=>'AjaxCtrl@search_directory'));
+Route::post('logged/ajax/save_coords', array('before'=>'escape', 'as'=>'ajax-save-coords', 'uses'=>'AjaxCtrl@save_coords'));
+Route::post('logged/ajax/get_list_coords', array('before'=>'escape', 'as'=>'ajax-get-list-coords', 'uses'=>'AjaxCtrl@get_list_coords'));
+
+///GAME///
+Route::post('logged/ajax/post_login', array('before'=>'escape', 'as'=>'ajax-post-login', 'uses'=>'AjaxCtrl@post_login'));
+Route::post('logged/ajax/create_join_sotosholy', array('before'=>'escape', 'as'=>'ajax-create-join-sotosholy', 'uses'=>'AjaxCtrl@create_join_sotosholy'));
+Route::post('logged/ajax/get_game_list', array('before'=>'escape', 'as'=>'ajax-get-game-list', 'uses'=>'AjaxCtrl@get_game_list'));
+Route::post('logged/ajax/join_game_info', array('before'=>'escape', 'as'=>'ajax-join-game-info', 'uses'=>'AjaxCtrl@join_game_info'));
+
+Route::get('logged/sotosholy/{id}', array('before'=>'escape', 'as'=>'ajax-sotosholy-{id}', 'uses'=>'LoggedHomeCtrl@sotosholy'));
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////CRONJOB//////////////////////////////////////////////

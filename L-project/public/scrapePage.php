@@ -10,14 +10,14 @@ if (!$con)
   }		
 
 $state_array = array('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY');
-$specialty = 'Emergency Medicine';
-$sub_specialty = 'Hospice and Palliative';
+$specialty = 'Internal Medicine';
+$sub_specialty = 'Not Specified';
 
 foreach($state_array as $state){
 	$node_count = 1;
 	$node_end = 0;
 	while($node_count < 500 && $node_end == 0){
-		$html = file_get_contents('http://www.e-physician.info/inc/display.php?state='.$state.'&dename=doctors-physicians-emergency-medicine-hospice-palliative-medicine&city=&name=&sortby=i&start='.$node_count); //get the html returned from the following url
+		$html = file_get_contents('http://www.e-physician.info/inc/display.php?state='.$state.'&dename=doctors-physicians-internal-medicine&city=&name=&sortby=i&start='.$node_count); //get the html returned from the following url
 
 		$pokemon_doc = new DOMDocument();
 

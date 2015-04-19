@@ -60,6 +60,10 @@ class LoggedHomeCtrl extends BaseController {
 	public $near4;
 	public $near5;
 	
+	//Professions
+	public $professions = array('All', 'Family Medicine', 'Hospitalist', 'Pediatrics', 'Not Specified');
+	public $sub_professions = array('All', 'Adult', 'Not Specified');
+	
 	//Communication variables/
 	public $room;
 	
@@ -73,14 +77,14 @@ class LoggedHomeCtrl extends BaseController {
 	
 	public function __construct(){
 		include('blockchainClass.php');
-		$this->blockchain = new blockchainClass();
+		//$this->blockchain = new blockchainClass();
 		$this->id = Session::get('MYSESSION');
 		$this->session_hash = Session::get('MYHASH');
 		$this->ip = $_SERVER['REMOTE_ADDR'];
 		
-		require_once("Coinbase.php");
-		$coinbase = Coinbase::withApiKey($this->coinbase_key, $this->coinbase_secret);
-		$this->coinbase_price = $coinbase->getBuyPrice('1');
+		//require_once("Coinbase.php");
+		//$coinbase = Coinbase::withApiKey($this->coinbase_key, $this->coinbase_secret);
+		//$this->coinbase_price = $coinbase->getBuyPrice('1');
 		
 		$user = Users::find($this->id);
 		$this->user_name = $user->user;
@@ -123,8 +127,8 @@ class LoggedHomeCtrl extends BaseController {
 		if($bitcoin_address){
 			$this->btc_address = $bitcoin_address->address;
 		}else{
-			$this->btc_address = $this->blockchain->generate_address($this->user_name, $this->id);
-			DB::table('blockchain_schema')->insert(array('user_id'=>$this->id, 'user'=>$this->user_name, 'address'=>$this->btc_address));
+			//$this->btc_address = $this->blockchain->generate_address($this->user_name, $this->id);
+			//DB::table('blockchain_schema')->insert(array('user_id'=>$this->id, 'user'=>$this->user_name, 'address'=>$this->btc_address));
 		}
 		
 		//$this->btc_balance = $this->blockchain->get_balance($this->btc_address);
@@ -438,9 +442,45 @@ class LoggedHomeCtrl extends BaseController {
 	//Main Pages/
 	public function get_home_logged()
 	{
+		
 		return View::make('logged.index.home', $this->nav_variables
 		)->with('mail_rows', $this->new_mail_array)
 		->with('fav_rows', $this->user_rows);
+	}
+	
+	public function sotosholy($id)
+	{
+		$sotosholy = Sotosholy::find($id);
+		
+		$user1 = Users::find($sotosholy->player1);
+		
+		if($sotosholy->player2 != 0){
+			$user2 = Users::find($sotosholy->player2);
+			$user2_name = $user2->user;
+		}else{
+			$user2_name = 'Open';
+		}
+		
+		if($sotosholy->player3 != 0){
+			$user3 = Users::find($sotosholy->player3);
+			$user3_name = $user3->user;
+		}else{
+			$user3_name = 'Open';
+		}
+		
+		if($sotosholy->player4 != 0){
+			$user4 = Users::find($sotosholy->player4);
+			$user4_name = $user4->user;
+		}else{
+			$user4_name = 'Open';
+		}
+		
+		$sotosholy_array = array('id'=>$id, 'max_players'=>$sotosholy->max_players, 'bounty'=>$sotosholy->bounty, 'player1'=>$sotosholy->player1, 'player1_name'=>$user1->user, 'player2'=>$sotosholy->player2, 'player2_name'=>$user2_name, 'player3'=>$sotosholy->player3, 'player3_name'=>$user3_name, 'player4'=>$sotosholy->player4, 'player4_name'=>$user4_name, 'player1_balance'=>$sotosholy->player1_balance, 'player2_balance'=>$sotosholy->player2_balance, 'player3_balance'=>$sotosholy->player3_balance, 'player4_balance'=>$sotosholy->player4_balance, 'player1_property'=>$sotosholy->player1_property, 'player2_property'=>$sotosholy->player2_property, 'player3_property'=>$sotosholy->player3_property, 'player4_property'=>$sotosholy->player4_property);
+		
+		return View::make('logged.index.sotosholy', $this->nav_variables
+		)->with('mail_rows', $this->new_mail_array)
+		->with('fav_rows', $this->user_rows)
+		->with('sotosholy', $sotosholy_array);
 	}
 	
 	//Profile
@@ -706,36 +746,11 @@ class LoggedHomeCtrl extends BaseController {
 	//Directory Page
 	public function get_home_directory()
 	{
-		$doctors_array = array();
 		
-		/*DB::table('directory_schema')->chunk(100, function($doctors)
-		{
-			
-			$doctors_array = array();
-			$i = 0;
-			
-			foreach($doctors as $doctor){
-				$doctors_array = array_add($doctors_array, $doctor->id, array('id'=>$doctor->id,'name'=>$doctor->name, 'address'=>$doctor->address, 'specialty'=>$doctor->specialty, 'sub_specialty'=>$doctor->sub_specialty, 'phone'=>$doctor->phone));
-				$i++;
-					
-					
-			}
-			
-			return View::make('logged.index.directory', $this->nav_variables
-			)->with('doctors_list', $doctors_array)
-			->with('mail_rows', $this->new_mail_array);
-		
-		});*/
-		
-		$doctors = DB::table('directory_schema')->take(100)->get();
-		
-		foreach($doctors as $doctor){
-				$doctors_array = array_add($doctors_array, $doctor->id, array('id'=>$doctor->id,'name'=>$doctor->name, 'address'=>$doctor->address, 'specialty'=>$doctor->specialty, 'sub_specialty'=>$doctor->sub_specialty, 'phone'=>$doctor->phone));
-			}
-			
 		return View::make('logged.index.directory', $this->nav_variables
-			)->with('doctors_list', $doctors_array)
-			->with('mail_rows', $this->new_mail_array);
+			)->with('mail_rows', $this->new_mail_array)
+			->with('professions', $this->professions)
+			->with('sub_professions', $this->sub_professions);
 	}
 	
 	//Home page

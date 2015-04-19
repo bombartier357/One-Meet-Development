@@ -35,7 +35,7 @@
 					 <div style='min-width:50px;min-height:50px;max-width:50px;max-height:50px;'><div style='overflow:hidden;'>
 						<img  style="{[{search.profile_style}]}" src="/L-project/public/images/{[{search.avatar}]}" />
 					</div>
-					 </td><td ng-click="nav_profile(search.id);">{[{search.user}]}</td><td ng-click="nav_profile(search.id);">{[{search.sex}]}</td>
+					 </td><td ng-click="nav_profile(search.id);" ng-bind="search.user"></td><td ng-click="nav_profile(search.id);" ng-bind="search.sex"></td>
 				 <td>
 					 <div style='float:right;'>
 						<button id='make-favorite{[{search.id}]}' ng-click='make_favorite(search.id,1);' type='button' class='{[{search.button1}]} btn-lg'>

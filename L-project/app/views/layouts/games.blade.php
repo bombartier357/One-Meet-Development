@@ -40,4 +40,6 @@
 	<script type='text/javascript' src='/L-project/public/js/jquery.spin.js'></script>
 	<script type='text/javascript' src='/L-project/public/packages/sweetalert-master/lib/sweet-alert.min.js'></script>
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+	<script src='/L-project/public/SimpleWebRTC-master/latest.js'></script>
+	<script src='/L-project/public/js/simpleRTC.js'></script>
 </html>

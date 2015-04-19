@@ -12,6 +12,82 @@ class AjaxCtrl extends BaseController {
 		$coinbase = Coinbase::withApiKey($this->coinbase_key, $this->coinbase_secret);
 		$this->coinbase_price = $coinbase->getBuyPrice('1');
 	}
+	
+	public function create_join_sotosholy(){
+		$user = Input::get('id');
+		$bounty = Input::get('bounty') * 100000000;
+		$max_players = Input::get('max_players');
+		
+		$game = Sotosholy::create(array('player1'=>$user,
+								'bounty'=>$bounty,
+								'max_players'=>$max_players));
+								
+		return $game->id;
+	}
+	
+	public function join_game_info(){
+		$user = Input::get('my_id');
+		$game_id = Input::get('game_id');
+		
+		$game = Sotosholy::find($game_id);	
+		
+		if($game['player2'] == 0  && $game['player1'] != $user){
+			$game['player2'] = $user;
+			$game['player2_balance'] = $game->bounty;
+		}elseif($game['player3'] == 0 && $game['player1'] != $user && $game['player2'] != $user){
+			$game['player3'] = $user;
+			$game['player3_balance'] = $game['bounty'];
+		}elseif($game['player4'] == 0 && $game['player1'] != $user && $game['player2'] != $user && $game['player3'] != $user){
+			$game['player4'] = $user;
+			$game['player4_balance'] = $game['bounty'];
+		}
+		
+		if($game['player1'] != 0 && $game['player2']!= 0 && $game['player3'] != 0 && $game['player4'] != 0 && $game['start'] == 0){
+			$game['start'] = 1;
+			$turn = rand(1, 4);
+			$game['turn'] = $turn;
+			
+			$user_withdraw = Users::find($user);
+			$user_withdraw['temp_coins'] = $user_withdraw['temp_coins'] - $game['bounty'];
+			//$user_withdraw->save();
+		}
+		
+		//$game->save();
+		
+		return array('id'=>$game->id, 'max_players'=>$game->max_players, 'bounty'=>$game->bounty, 'turn'=>$game->turn, 'turn_time'=>$game->turn_time, 'start'=>$game->start, 'start_time'=>$game->start_time, 'player1'=>$game->player1, 'player2'=>$game->player2, 'player3'=>$game->player3, 'player4'=>$game->player4, 'player1_balance'=>$game->player1_balance, 'player2_balance'=>$game->player2_balance, 'player3_balance'=>$game->player3_balance, 'player4_balance'=>$game->player4_balance, 'player1_property'=>$game->player1_property, 'player2_property'=>$game->player2_property, 'player3_property'=>$game->player3_property, 'player4_property'=>$game->player4_property);
+	}
+	
+	public function get_game_list(){
+		$user = Input::get('id');
+		$list_array = array();
+		
+		$list = Sotosholy::take(10)->get();
+		
+		foreach($list as $rows){
+			$list_array = array_add($list_array, $rows->id, array('id'=>$rows->id, 'max_players'=>$rows->max_players, 'bounty'=>($rows->bounty / 100000000)));
+		}
+		
+		return $list_array;
+	}
+	
+	public function post_login()
+	{
+		$user = Input::get('user');
+		$pass = Input::get('password');
+		$row = Users::where('user', '=', $user)->first();
+		
+		if(Hash::check($pass, $row->password)){
+			//$row->touch();
+			$new_hash = Str::random(255);
+			Users::where('user', '=', $user)->update(array('session_hash' => $new_hash, 'last_ip' => $_SERVER['REMOTE_ADDR']));
+			Session::put('MYSESSION', $row->id);
+			Session::put('MYHASH', $new_hash);
+			return 'Logging in as user: '.$user;
+		}else{
+			return "Invalid Password!";
+		}
+			
+	}
 
 
 	public function make_favorite()
@@ -874,6 +950,15 @@ class AjaxCtrl extends BaseController {
 		
 	}
 	
+	//Checks lat and long of dir list
+	public function get_list_coords(){
+		$id = Input::get('id');
+		
+		$coords = Directories::find($id);
+		
+		return $coords;
+	}
+	
 	//Gets mail details
 	public function retrieve_mail_details()
 	{
@@ -1030,7 +1115,58 @@ class AjaxCtrl extends BaseController {
 		
 		return $fav_rows;
 	}
+	
+	public function save_coords(){
+		$id = Input::get('id');
+		$lat = Input::get('lat');
+		$lon = Input::get('lon');
+		
+		Directories::where('id', '=', $id)->update(array('lat'=>$lat, 'lon'=>$lon));
+		//$prof = Directories::find($id);
+		//$prof->lat = $lat;
+		//$prof->lon = $lon;
+		//$prof->save();
+	}
 
+	//Searches public directory
+	public function search_directory(){
+		$string = Input::get('string');
+		$specialty = Input::get('specialty');
+		$sub_specialty = Input::get('sub_specialty');
+		$page = Input::get('page') * 100;
+		
+		$doctors_array = array();
+		
+		if(isset($specialty) && $specialty != 'All'){
+			$doctors = Directories::where("specialty", "=", $specialty)->skip($page)->take(100)->get();
+			
+			$grab_directory = Directories::where("specialty", "=", $specialty);
+			$dir_count = $grab_directory->count();
+		}elseif(isset($sub_specialty) && $sub_specialty != 'All'){
+			$doctors = Directories::where("sub_specialty", "=", $sub_specialty)->skip($page)->take(100)->get();
+			
+			$grab_directory = Directories::where("sub_specialty", "=", $sub_specialty);
+			$dir_count = $grab_directory->count();
+		}elseif(isset($string)){
+			$doctors = Directories::where("name", "LIKE", "%".$string."%")->skip($page)->take(100)->get();
+			
+			$grab_directory = Directories::where("name", "LIKE", "%".$string."%");
+			$dir_count = $grab_directory->count();
+			
+		}else{
+			$doctors = Directories::take(100)->get();
+			
+			$grab_directory = Directories::all();
+			$dir_count = $grab_directory->count();
+		}
+		
+		foreach($doctors as $doctor){
+				$doctors_array = array_add($doctors_array, $doctor->id, array('id'=>$doctor->id,'name'=>$doctor->name, 'address'=>$doctor->address, 'specialty'=>$doctor->specialty, 'sub_specialty'=>$doctor->sub_specialty, 'phone'=>$doctor->phone, 'state'=>$doctor->state));
+			}
+			
+			return array('count'=>$dir_count, $doctors_array);
+	}
+	
 	//Creates search query
 	public function make_search(){
 		$final_rows = array();
