@@ -20,7 +20,7 @@ console.log('angApp.js loaded!');
 	
 	///////////////////////////////////////////////////////////////LOGIN CTRL///////////////////////////////////////////////////////////
 	app.controller("LoginCtrl", function($scope, $http) {
-		var my_id = $('#user-id').val();
+		/*var my_id = $('#user-id').val();
 		
 		function loginUser(){
 			var user = $("#username-login").val();
@@ -43,12 +43,13 @@ console.log('angApp.js loaded!');
 		$scope.loginUser = function(){
 			loginUser();
 		}
-		
+		*/
 	});
 	
 	/////////////////////////////Sotosholy CTRL////////////////////////////////////////////////////////////////////
 	//This controls Sotosholy Game within the application...
 	app.controller("SotosholyCtrl", function($scope, $http, $interval) {
+		/*
 		var my_id = $('#user-id').val();
 		$interval(checkTurn, 30000);
 		
@@ -148,12 +149,13 @@ console.log('angApp.js loaded!');
 		$scope.joinGame = function(id){
 			joinGame(id);
 		}
-		
+		*/
 	});
 	
 	
 	///////////////////////////////////////////////////////////////////////////TRANSACTION CTRL///////////////////////////////////////////
 	app.controller("TransactionsCtrl", function($scope, $http) {
+		/*
 		var my_id = $('#user-id').val();
 		//Get list of users btc txs.
 		get_push_transactions();
@@ -233,12 +235,13 @@ console.log('angApp.js loaded!');
 				swal("Something went wrong!", "There was an while accepting this push transactions.  If this error persists, please contact the site administrator.", "error");
 			});
 		}
-		
+	*/	
 	});
 	
 	/////////////////////////////////////////////////////////////////////////////MAPS CTRL/////////////////////////////////////
 	
 	app.controller("MapsCtrl", function($scope, $http) {
+		/*
 		var geocoder;
 		var map;
 		var initialized = true;
@@ -330,12 +333,13 @@ console.log('angApp.js loaded!');
 			
 		
 			
-			
+			*/
 		});
 	
 	
 	//////////////////////////////////////////////////////////////////////////////DIRECTORY CTRL///////////////////////////////
 	app.controller("DirectoryCtrl", function($scope, $http) {
+		/*
 		var my_id = $('#user-id').val();
 		var search_input = $("#search-input").val();
 		var page = 1;
@@ -418,6 +422,7 @@ console.log('angApp.js loaded!');
 					swal("Something went wrong!", "There was an error in requesting loan information from the server.  If this error persists, please contact the site administrator.", "error");
 				});
 		}
+	 */
 	});
 	/////////////////////////////////////////////////////////////////////////////PROFILE CTRL////////////////////////////////////////////
 	
@@ -463,10 +468,12 @@ console.log('angApp.js loaded!');
 					swal("Something went wrong!", "There was an while saving your tags.  If this error persists, please contact the site administrator.", "error");
 				});
 		}
+		
 	});
 	
 	/////////////////////////////////////////////////////////////////////////////BITCOIN CTRL////////////////////////////////////////////
 	app.controller("BitcoinCtrl", function($scope, $http) {
+		/*
 		//Ctrl variables
 		var my_id = $('#user-id').val();
 		var coinbase_price = $('#coinbase-price').val();
@@ -963,7 +970,7 @@ console.log('angApp.js loaded!');
 				swal("Insufficient bitcoins!", "You do not have enough bitcoins to complete this transaction.  Add more bitcoins to your account and try again.", "error");
 			}
 		}
-		
+		*/
 	});
 	
 	///////////////////////////////////////////////////////////////////////////////NAVCTRL///////////////////////////////////////////////////////////

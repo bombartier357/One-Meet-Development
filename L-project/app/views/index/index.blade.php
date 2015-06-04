@@ -7,9 +7,9 @@
 			<div id='logo-spot'>
 				<center><img style='position:relative;' src='images/onemeet.png' />
 				</br>
-				<button onclick='about_us()' class='btn btn-default'>About Us</button>
-				<button onclick='login()' class='btn btn-default'>Login</button>
-				<button onclick='register()' class='btn btn-default'>Register</button>
+				<!--button style='position:relative;z-index:100;' onclick='about_us()' class='btn btn-default'>About Us</button-->
+				<button style='position:relative;z-index:100;' onclick='login()' class='btn btn-default'>Login</button>
+				<button style='position:relative;z-index:100;' onclick='register()' class='btn btn-default'>Register</button>
 				</center>
 			</div>
 			<center>
@@ -33,7 +33,7 @@
 				{{ Form::close() }}
 			</div></center>
 			
-			<center><div id='index-switcher-register' style='position:relative;z-index:100;border-radius: 15px;background-color:transparent;width:200px;height:400px;margin-top:-420px;display:none;margin-right:450px;'>
+			<center><div id='index-switcher-register' style='position:relative;z-index:100;border-radius: 15px;background-color:transparent;width:200px;height:400px;margin-top:50px;display:none;'>
 				{{ Form::open(array('url'=>'register/create', 'method'=>'POST')) }}
 				<p>
 				{{ Form::label('user', 'User:') }}<br />
@@ -42,10 +42,6 @@
 				<p>
 				{{ Form::label('email', 'Email:') }}<br />
 				{{ Form::text('email', '', array('class'=>'btn btn-default')) }}
-				</p>
-				<p>
-				{{ Form::label('sex', 'Male:') }}{{ Form::radio('sex', 'Male') }}
-				{{ Form::label('sex', 'Female:') }}{{ Form::radio('sex', 'Female') }}
 				</p>
 				<p>
 				{{ Form::label('password', 'Password:') }}<br />

@@ -5,7 +5,7 @@
 		<a style="color:blue;" href="{{ URL::route('logged-home') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;margin-left:20px;width:100px;' id='home-link'>Home</button></a>
 		<a style="color:blue;" href="{{ URL::route('logged-profile') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:100px;' id='profile-link'>Profile</button></a>
 		<a style="color:blue;" href="{{ URL::route('logged-search') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:100px;' id='search-link'>Search</button></a>
-		<a style="color:blue;" href="{{ URL::route('provider-directory') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:200px;' id='provider-directory'>Provider Directory</button></a>
+		<!--a style="color:blue;" href="{{ URL::route('provider-directory') }}"><button class='btn btn-default' style='margin-top:10px;border:2px solid #cacaca;width:200px;' id='provider-directory'>Provider Directory</button></a-->
 		<div style='margin-left:275px;margin-top:-43px;'><p style="color:#cacaca;display:none;" class="navbar-text"><span style='float:left;color:#cacaca;margin-left:75px;'>Logged in as {{ $user_name }}</span><span style='margin-left:50px;'><i class='fa fa-bitcoin'></i> {{ $btc_balance }}</span><span style='margin-left:75px;'>Wallet Transactions: {{ $btc_txs }}</span><span style='margin-left:30px;'>Total Received: {{ $btc_total_received }}</span><span style='margin-left:30px;'>Total Spent: {{ $btc_total_sent }}</span><span style='margin-left:75px;'><font size='0'>Account Address: {{ $btc_address }}</font></span></p></div>
 		<ul class='nav nav-pills' style='float:right;margin-top:3px;'>
 			<li role='presentation'>

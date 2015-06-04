@@ -37,7 +37,7 @@ class RegisterCtrl extends BaseController {
 			Users::create(array(
 				'user'=>Input::get('user'),
 				'email'=>Input::get('email'),
-				'sex'=>Input::get('sex'),
+				'sex'=>'Female',
 				'password'=>Hash::make(Input::get('password'))
 			));
 			
